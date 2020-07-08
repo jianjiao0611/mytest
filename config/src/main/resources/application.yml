@@ -1,0 +1,31 @@
+server:
+  port: 8001
+  servlet:
+    application-display-name: config
+#  servlet:
+#    context-path: /config
+eureka:
+  client:
+    serviceUrl:
+      register-with-eureka: true
+      fetch-registry: true
+      defaultZone: http://localhost:8000/eureka
+  instance:
+    preferIpAddress: true
+spring:
+  profiles:
+    active: native
+  #  application:
+#    name: config-eureka-server
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:D:\config
+#        git:
+#          uri: https://github.com/huzhicheng/config-only-a-demo
+#          username: github 用户名
+#          password: github 密码
+#          default-label: master
+#          search-paths: config
+

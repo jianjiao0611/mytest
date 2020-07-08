@@ -1,0 +1,47 @@
+# 服务配置
+server:
+  port: 8085
+# Spring相关配置
+
+spring:
+  ##数据库连接信息
+  datasource:
+    # 数据源配置
+    url: jdbc:mysql://127.0.0.1:3306/activity?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+    xa:
+
+      properties:
+
+        pinGlobalTxToPhysicalConnection: true
+
+        useServerPrepStmts: true
+
+
+    thymeleaf:
+
+      mode: HTML
+
+      encoding: utf-8
+
+        # 禁用缓存
+
+      cache: false
+
+
+
+  activiti:
+
+        # 自动建表
+
+    database-schema: ACTIVITI
+
+    database-schema-update: true
+
+    history-level: full
+
+    db-history-used: true
+jianjiao:
+  test: 22222
