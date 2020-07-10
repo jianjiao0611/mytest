@@ -4,7 +4,6 @@ import com.example.product.entity.ProductEntity;
 import com.example.product.entity.ProductVo;
 import com.example.product.service.Product;
 import com.example.product.service.StudentService;
-import com.example.product.util.SpringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
