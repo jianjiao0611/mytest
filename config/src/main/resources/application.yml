@@ -13,6 +13,8 @@ eureka:
   instance:
     preferIpAddress: true
 spring:
+  application:
+    name: config
   profiles:
     active: native
   #  application:

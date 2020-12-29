@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jjtest.taskcenter.dao.user.UserDao">
+
+    <select id="selectUser" parameterType="com.jjtest.taskcenter.po.UserPO" resultType="com.jjtest.taskcenter.po.UserPO">
+        select id,user_name userName,password,age,sex,phone from `user_info` where user_name = #{userName}
+    </select>
+
+</mapper>

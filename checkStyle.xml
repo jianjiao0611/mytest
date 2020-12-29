@@ -13,7 +13,7 @@
     <!-- 检查每个包中是否有java注释文件，默认有package-info.java -->
     <!-- <module name="JavadocPackage"/> -->
     <!-- 检查文件是否以一个空行结束 -->
-    <module name="NewlineAtEndOfFile"/>
+    <!--<module name="NewlineAtEndOfFile"/>-->
 
     <!-- 检查property文件中是否有相同的key -->
     <module name="Translation"/>
@@ -43,7 +43,7 @@
         <!-- 检查类和接口的javadoc。默认不检查author和version tags -->
         <module name="JavadocType"/>
         <!-- 检查变量的javadoc -->
-        <module name="JavadocVariable"/>
+        <!--<module name="JavadocVariable"/>-->
         <!-- 检查javadoc的格式 -->
         <module name="JavadocStyle">
             <property name="checkFirstSentence" value="false"/>
@@ -126,6 +126,7 @@
         </module>
         <!-- 方法的参数个数不超过5个。 并且不对构造方法进行检查-->
         <module name="ParameterNumber">
+            <property name="severity" value="info"/>
             <property name="max" value="10" />
             <property name="ignoreOverriddenMethods" value="true"/>
             <property name="tokens" value="METHOD_DEF" />

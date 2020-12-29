@@ -12,6 +12,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.CollectionUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
@@ -176,14 +177,36 @@ public class ProductApplicationTests {
 //        Pattern pattern=Pattern.compile(s);
 //        Matcher matcher = pattern.matcher("service_quality_report_day_${20200523}.xlsx");
 //        System.out.println(matcher.matches());
+//        try {
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHH");
+//            Date parse = simpleDateFormat.parse("2020041010");
+//            System.out.println(parse);
+//        }catch (Exception e){
+//
+//        }
+//        int a = 113;
+//        int b = 2038;
+//        Float c = 0.00f;
+//        System.out.println(c.floatValue()==0);
+//        System.out.println((float)a/b);
+
         try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHH");
-            Date parse = simpleDateFormat.parse("2020041010");
-            System.out.println(parse);
-        }catch (Exception e){
-
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+            Calendar c1 = Calendar.getInstance();
+            Calendar c2 = Calendar.getInstance();
+            c1.setTime(simpleDateFormat.parse("20200901"));
+            c2.setTime(simpleDateFormat.parse("20200801"));
+//            System.out.println((c1.get(Calendar.YEAR) - c2.get(Calendar.YEAR))*12);
+            int i =  c1.get(Calendar.MONTH) - c2.get(Calendar.MONTH) + (c1.get(Calendar.YEAR) - c2.get(Calendar.YEAR))*12;
+//            System.out.println(i);
+            i = Math.abs(i);
+            System.out.println(i);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-
+//        String str = "1238";
+//        str = str.substring(0,str.length()-3);
+//        System.out.println(str);
     }
 
     @Test
