@@ -31,7 +31,7 @@ public class DistributedLock {
      * 尝试获取分布式锁
      * @param lockKey 锁
      * @param requestId 请求标识
-     * @param expireTime 超期时间
+     * @param expireTime 超期时间（毫秒）
      * @return 是否获取成功
      */
     public  boolean tryGetDistributedLock(String lockKey, String requestId, int expireTime) {
@@ -39,6 +39,7 @@ public class DistributedLock {
             return (boolean) redisTemplate.execute(new RedisCallback<Boolean>() {
                 @Override
                 public Boolean doInRedis(RedisConnection redisConnection) throws DataAccessException {
+
                     String result = null;
                     Object nativeConnection = redisConnection.getNativeConnection();
                     if (nativeConnection instanceof JedisCluster) {
@@ -50,6 +51,32 @@ public class DistributedLock {
                     return LOCK_SUCCESS.equals(result);
                 }
             });
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * 获取分布式锁
+     * @param lockKey 锁
+     * @param requestId 请求标识
+     * @param expireTime 超期时间（毫秒）
+     * @param retryNum 重试次数
+     * @param retryTime 每次重试暂停时间(毫秒)
+     * @return 是否获取成功
+     */
+    public boolean tryLock(String lockKey, String requestId, int expireTime, int retryNum, int retryTime) {
+        try {
+            int num = 0;
+            while (num < retryNum) {
+                boolean b = tryGetDistributedLock(lockKey, requestId, expireTime);
+                if (b) {
+                    return b;
+                }
+                Thread.sleep(retryTime);
+                num++;
+            }
+            return false;
         } catch (Exception e) {
             return false;
         }

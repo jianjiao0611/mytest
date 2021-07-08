@@ -6,4 +6,36 @@
         select id,user_name userName,password,age,sex,phone from `user_info` where user_name = #{userName} and user_model = #{userModel}
     </select>
 
+    <insert id="batchInsertUser">
+        insert into `user_info`(
+            user_name,
+            password,
+            age,
+            sex,
+            phone
+        ) values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.userName},
+            #{item.password},
+            #{item.age},
+            #{item.sex},
+            #{item.phone}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        password = values(password),
+        age = values(age),
+        sex = values(sex),
+        phone = values(phone)
+    </insert>
+
+    <update id="updateUser">
+        update user_info
+        set age = #{age},
+        sex = #{sex},
+        phone = #{phone}
+        where id = #{id}
+    </update>
+
 </mapper>

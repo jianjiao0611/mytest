@@ -3,6 +3,8 @@ package com.jjtest.user.dao;
 import com.jjtest.user.po.UserPO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * 用户
  */
@@ -16,6 +18,7 @@ public interface UserMapper {
      */
     UserPO selectUser(UserPO po);
 
+    int batchInsertUser(List<UserPO> list);
 
-
+    int updateUser(UserPO userPO);
 }

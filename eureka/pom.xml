@@ -6,7 +6,6 @@
         <groupId>com.example</groupId>
         <artifactId>jjtest</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
     <artifactId>eureka</artifactId>
@@ -69,7 +68,7 @@
     <!--</dependencyManagement>-->
 
     <build>
-        <finalName>jjtest</finalName>
+        <finalName>eureka</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

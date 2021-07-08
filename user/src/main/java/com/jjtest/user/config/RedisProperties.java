@@ -1,11 +1,15 @@
 package com.jjtest.user.config;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
 import java.util.List;
 
+@Configuration
 @ConfigurationProperties(prefix = "spring.redis")
+@Data
 public class RedisProperties {
 
     private int database = 0; // Database index used by the connection factory
@@ -19,6 +23,8 @@ public class RedisProperties {
     private Cluster cluster;
     private final Jedis jedis = new Jedis();
     private final Lettuce lettuce = new Lettuce();
+
+    private int maxIdle;
     // getter and setter...
     public static class Pool { // 连接池配置属性
         private int maxIdle = 8; //  连接池内空闲连接的最大数量，使用负值表示没有限制

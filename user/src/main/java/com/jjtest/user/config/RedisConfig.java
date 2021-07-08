@@ -1,5 +1,6 @@
 package com.jjtest.user.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,20 +14,18 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 public class RedisConfig {
 
+    @Autowired
+    private RedisProperties redisProperties;
+
     @Bean
-    @ConfigurationProperties(prefix = "spring.redis.pool")
     public JedisPoolConfig getRedisConfig() {
         JedisPoolConfig config = new JedisPoolConfig();
         return config;
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "spring.redis")
     public JedisConnectionFactory getConnectionFactory() {
-        JedisConnectionFactory factory = new JedisConnectionFactory();
-        factory.setUsePool(true);
-        JedisPoolConfig config = getRedisConfig();
-        factory.setPoolConfig(config);
+        JedisConnectionFactory factory = new JedisConnectionFactory(getRedisConfig());
         return factory;
     }
 

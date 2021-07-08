@@ -5,6 +5,7 @@ import com.jjtest.taskcenter.dao.product.ProductDao;
 import com.jjtest.taskcenter.dao.user.UserDao;
 import com.jjtest.taskcenter.po.ProductPO;
 import com.jjtest.taskcenter.po.UserPO;
+import com.jjtest.taskcenter.service.KafkaProducer;
 import com.jjtest.taskcenter.service.ProductService;
 import com.jjtest.tool.response.ResultObject;
 import org.assertj.core.util.DateUtil;
@@ -29,8 +30,10 @@ public class TaskcenterApplicationTests {
     private ProductDao productDao;
     @Autowired
     private ProductService productService;
+//    @Autowired
+//    private UserClient userClient;
     @Autowired
-    private UserClient userClient;
+    private KafkaProducer kafkaProducer;
 
     @Test
     public void contextLoads() {
@@ -49,9 +52,9 @@ public class TaskcenterApplicationTests {
 //        productPO.setProductName("fengfeng");
 //        productPO.setPrice(new BigDecimal(5.7));
 //        productService.editProduct(productPO);
-        ResultObject resultObject = userClient.testClient();
-        System.out.println(resultObject);
-
+//        ResultObject resultObject = userClient.testClient();
+//        System.out.println(resultObject);
+        kafkaProducer.send("你好");
 
 
     }

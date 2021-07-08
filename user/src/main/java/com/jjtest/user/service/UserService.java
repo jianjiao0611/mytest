@@ -1,5 +1,6 @@
 package com.jjtest.user.service;
 
+import com.jjtest.user.aop.transactional.MyAnnotation;
 import com.jjtest.user.dao.UserMapper;
 import com.jjtest.user.po.UserPO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
  * 用户
  */
 @Service
-public class UserService {
+public class UserService implements IUser {
 
     @Autowired
     private UserMapper userMapper;
@@ -20,5 +21,22 @@ public class UserService {
         UserPO userPO = userMapper.selectUser(po);
         return userPO;
     }
+
+    public void updateUser(UserPO userPO) {
+        userMapper.updateUser(userPO);
+
+        this.updateUserPhone(userPO);
+    }
+
+    @MyAnnotation
+    public void updateUserPhone(UserPO userPO) {
+        userPO.setPhone("666666");
+        userMapper.updateUser(userPO);
+        if (true) {
+            throw new NullPointerException();
+        }
+    }
+
+
 
 }

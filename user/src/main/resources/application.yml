@@ -21,6 +21,7 @@ spring:
     name: user
   datasource:
     druid:
+
       url: jdbc:mysql://127.0.0.1:3306/jjtest_user?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=Asia/Shanghai
       username: root
       password: 123456
@@ -29,9 +30,9 @@ spring:
       connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
       useGlobalDataSourceStat: true
       log-abandoned: true
-      filter:
-        stat:
-          log-slow-sql: true
+#      filter:
+#        stat:
+#          log-slow-sql: true
       # 初始化大小，最小，最大
       initialSize: 2
       minIdle: 2
@@ -49,6 +50,54 @@ spring:
       # 打开PSCache，并且指定每个连接上PSCache的大小
       poolPreparedStatements: true
       maxPoolPreparedStatementPerConnectionSize: 20
+
+      webStatFilter:
+        enabled: true
+      statViewServlet:
+        enabled: true
+          # 设置白名单，不填则允许所有访问
+        allow:
+        url-pattern: /druid/*
+        # 控制台管理用户名和密码
+        login-username:
+        login-password:
+      filter:
+        stat:
+          enabled: true
+            # 慢SQL记录
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    listener:
+      concurrency: 9
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # 应答级别:多少个分区副本备份完成时向生产者发送ack确认(可选0、1、all/-1)
+      acks: all
+        # 设置大于0的值将使客户端重新发送任何数据，一旦这些数据发送失败。注意，这些重试与客户端接收到发送错误时的重试没有什么不同。
+        # 允许重试将潜在的改变数据的顺序，如果这两个消息记录都是发送到同一个partition，则第一个消息失败第二个发送成功，则第二条消息会比第一条消息出现要早。
+      retries: 0
+      client-id: user
+    consumer:
+      group-id: user
+      # 是否自动提交offset
+      enable-auto-commit: false
+      # 当kafka中没有初始offset或offset超出范围时将自动重置offset
+      # earliest:重置为分区中最小的offset;
+      # latest:重置为分区中最新的offset(消费分区中新产生的数据);
+      # none:只要有一个分区不存在已提交的offset,就抛出异常;
+      auto-offset-reset: latest
+      # 提交offset延时(接收到消息后多久提交offset)
+#      auto-commit-interval: 100ms
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 mybatis:
   mapper-locations: classpath*:/mapper/**.xml   #把xml文件放在com.XX.mapper.*中可能会出现找到的问题，这里把他放在resource下的mapper中
 #  typeAliasesPackage: com.tustore.taskcenter.entity #这里是实体类的位置 多个package用逗号或者分号分隔
@@ -67,5 +116,23 @@ eureka:
   instance:
     preferIpAddress: true
     instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+
+# 日志配置
+logging:
+  level:
+    com.*: debug
+    org.springframework: warn
+
+#异步线程配置
+async:
+  threadpool:
+    param:
+      config:
+        filepyncpool: '{"coreSize":10,"maxSize":100,"queueCapacity":100,"keepAliveSeconds":60}'
+      list:
+        - 1
+        - 2
+        - 3
+
 
 testff: \{"userName":"jj","age":21\}
