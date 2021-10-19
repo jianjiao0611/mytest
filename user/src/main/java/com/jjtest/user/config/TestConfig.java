@@ -9,4 +9,10 @@ import org.springframework.context.annotation.Configuration;
 public class TestConfig {
     @Value("${testff}")
     private String testff;
+
+    @Value("${usernamae}")
+    private String usernamae;
+
+    @Value("${password}")
+    private String password;
 }

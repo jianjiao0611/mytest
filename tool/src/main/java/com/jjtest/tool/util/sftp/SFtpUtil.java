@@ -77,6 +77,13 @@ public class SFtpUtil {
         return channelInfo;
     }
 
+    /**
+     * 上传文件
+     * @param sftpChannelInfo 连接信息
+     * @param folder 文件夹
+     * @param fileName 文件名
+     * @param inputStream 输入流
+     */
     public static void uploadFile(SftpChannelInfo sftpChannelInfo, String folder, String fileName, InputStream inputStream) {
         OutputStream outputStream = null;
         ChannelSftp channelSftp = sftpChannelInfo.getChannelSftp();
@@ -100,6 +107,11 @@ public class SFtpUtil {
         }
     }
 
+    /**
+     * 创建文件夹
+     * @param dir 格式 /test/upload
+     * @param channelSftp
+     */
     public static void mkdir(String dir, ChannelSftp channelSftp) {
         try {
             //进入根目录，否则进入sftp用户home目录

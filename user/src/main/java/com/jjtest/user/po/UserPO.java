@@ -27,4 +27,13 @@ public class UserPO extends BasePo implements java.io.Serializable {
 
     private String phone;
 
+    private StudentPo studentPo;
+
+    public UserPO() {
+        this.studentPo = new StudentPo();
+    }
+
+    public UserPO(Integer id) {
+        this.id = id;
+    }
 }

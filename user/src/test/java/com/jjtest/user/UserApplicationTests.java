@@ -19,10 +19,7 @@ import com.jjtest.user.dao.UserMapper;
 import com.jjtest.user.po.BasePo;
 import com.jjtest.user.po.StudentPo;
 import com.jjtest.user.po.UserPO;
-import com.jjtest.user.service.IUser;
-import com.jjtest.user.service.MyInvocationHandler;
-import com.jjtest.user.service.StudentService;
-import com.jjtest.user.service.UserService;
+import com.jjtest.user.service.*;
 import com.jjtest.user.service.eat.factory.AnimalFactory;
 import com.jjtest.user.util.RedisUtil;
 import org.apache.commons.io.IOUtils;
@@ -33,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.io.*;
 import java.lang.reflect.Proxy;
 import java.sql.SQLException;
@@ -64,6 +62,8 @@ public class UserApplicationTests {
     private UserMapper userMapper;
     @Autowired
     private StudentService studentService;
+    @Resource(name = "userService")
+    private IUser iUser;
 
     String script = "local value1 = tonumber(ARGV[1])\n"
             + "local value2 = tonumber(ARGV[2])\n"
@@ -161,6 +161,8 @@ public class UserApplicationTests {
 
     @Test
     public void test2(){
+        UserPO po = iUser.selectUserByUserName("jj");
+        System.out.println(po);
 //        TreeMap<Integer, String> treeMap = new TreeMap<>((a, b)->{
 //            if(a < b){
 //                return -1;
@@ -211,6 +213,9 @@ public class UserApplicationTests {
 
 
     }
+
+
+
 
     @Test
     public void testKeyword(){
@@ -399,4 +404,11 @@ public class UserApplicationTests {
         System.out.println(str.contains("200234"));
 
     }
+
+    @Test
+    public void testInterface() {
+        UserPO po = iUser.selectUserByUserName("op");
+        System.out.println(po);
+    }
+
 }

@@ -8,8 +8,10 @@ import com.jjtest.user.po.tree.Tree;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -86,6 +88,21 @@ public class LockTests {
 //
 //            Node node = tree.find("ff");
 //            System.out.println(node);
+
+
+            List<String> list = new ArrayList<>();
+            list.add("1");
+            list.add("2");
+            list.add("3");
+            System.out.println(list);
+            List<String> list1 = new ArrayList<>();
+            list1.addAll(list);
+            for(String s:list){
+                if(s.equals("1")){
+                    list1.add("1.1");
+                }
+            }
+            System.out.println(list1);
         } catch (Exception e) {
             e.printStackTrace();
         }

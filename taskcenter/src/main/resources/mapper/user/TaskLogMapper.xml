@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jjtest.taskcenter.dao.user.TaskLogDao">
+
+    <resultMap id="taskLogMap" type="com.jjtest.taskcenter.po.TaskLogPO">
+        <result column="id" property="id" />
+        <result column="task_id" property="taskId" />
+        <result column="task_name" property="taskName" />
+        <result column="status" property="status" />
+        <result column="task_start_time" property="taskStartTime" />
+        <result column="task_end_time" property="taskEndTime" />
+        <result column="task_result" property="result" />
+    </resultMap>
+
+    <insert id="insertTaskLog" useGeneratedKeys="true" keyProperty="id">
+        insert into t_task_log(
+                task_id,
+                task_name,
+                task_param,
+                status,
+                task_start_time,
+                task_end_time,
+                task_result
+        ) values (#{taskId},
+                  #{taskName},
+                   #{taskParam},
+                   #{status},
+                   #{taskStartTime},
+                   #{taskEndTime},
+                   #{result})
+    </insert>
+
+    <select id="selectTaskLogByTaskId" resultMap="taskLogMap">
+        select id,task_id,
+                task_name,
+                task_param,
+                status,
+                task_start_time,
+                task_end_time,
+                task_result
+        from t_task_log where id = #{taskLogId}
+    </select>
+
+    <update id="updateTaskLog" >
+        update t_task_log set task_param = #{taskParam},
+           status = #{status},
+           task_end_time = #{taskEndTime},
+           task_result = #{result}
+         where id = #{id}
+    </update>
+
+    <select id="selectLogByTaskIdAndParam" resultMap="taskLogMap">
+        select id,task_id,
+                task_name,
+                task_param,
+                status,
+                task_start_time,
+                task_end_time,
+                task_result
+        from t_task_log task_id = #{taskId} and task_param = #{param}
+    </select>
+
+</mapper>

@@ -9,7 +9,7 @@ eureka:
 
 spring:
   profiles:
-    active: dev
+    active: ${ENV_TYPE:product}
 
 ---
 spring:

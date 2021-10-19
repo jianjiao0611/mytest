@@ -1,7 +1,9 @@
 package com.jjtest.user.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jjtest.tool.exception.ServiceException;
 import com.jjtest.tool.response.ResultObject;
+import com.jjtest.user.config.TestConfig;
 import com.jjtest.user.po.UserPO;
 import com.jjtest.user.service.UserService;
 import com.jjtest.user.vo.UserLoginVO;
@@ -20,9 +22,15 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TestConfig testConfig;
+
+
+
     @GetMapping("/test")
     public String test() {
-        return "user";
+        System.out.println(testConfig.getPassword());
+        return "ok";
     }
 
     @PostMapping("/login")
