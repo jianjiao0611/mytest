@@ -1,4 +1,4 @@
-package com.jjtest.user.config;
+package com.jjtest.tool.response;
 
 import com.jjtest.tool.exception.ServiceException;
 import com.jjtest.tool.response.ResultObject;
@@ -21,7 +21,7 @@ public class TopException {
         if (e instanceof ServiceException) {
             log.error("业务日志", e);
             ServiceException serviceException = (ServiceException) e;
-            resultObject.resultObject(null, serviceException.getCode(), serviceException.getMsg());
+            resultObject.resultObject(null, serviceException.getCode() + "", serviceException.getMsg());
             return  resultObject;
         }
         log.error("系统日志", e);

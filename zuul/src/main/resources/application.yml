@@ -8,6 +8,9 @@ zuul:
     userservice:
       path: /userservice/**
       service-id: user
+    taskcenter:
+      path: /taskservice/**
+      service-id: taskcenter
 eureka:
   client:
     serviceUrl:

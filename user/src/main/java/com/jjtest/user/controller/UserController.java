@@ -3,12 +3,15 @@ package com.jjtest.user.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.jjtest.tool.context.DefaultContextDataThreadLocal;
 import com.jjtest.tool.model.LoginUserModel;
+import com.jjtest.tool.response.ResultObject;
 import com.jjtest.tool.util.threadpool.AsyncInvoke;
 import com.jjtest.user.po.UserPO;
 import com.jjtest.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +25,7 @@ import java.util.List;
 @RequestMapping("/user")
 @Api("用户")
 public class UserController {
+    private static final Logger LOGGER = LoggerFactory.getLogger("sys-user");
     @Autowired
     private UserService userService;
 
@@ -35,13 +39,17 @@ public class UserController {
     HttpServletResponse httpServletResponse;
 
     @GetMapping("/test")
-    public void testClient(@RequestParam("fileName")String fileName) {
+    public ResultObject testClient(@RequestParam(value = "fileName", required = false)String fileName) {
+        UserPO po = new UserPO(3);
+//        LOGGER.info(JSONObject.toJSONString(po));
         System.out.println(fileName);
 
 
 //        String token = request.getHeader("testjj");
 //        System.out.println(token);
-//        ResultObject resultObject = new ResultObject();
+        ResultObject resultObject = ResultObject.successResult();
+        resultObject.setData(po);
+        float f = 2/0;
 //        UserPO fengfeng = userService.selectUserByUserName("jj");
 //        Object o = new Object();
 //
@@ -50,7 +58,7 @@ public class UserController {
 //        list.add(fengfeng);
 //        ExcelUtil excelUtil = new ExcelUtil(UserPO.class);
 //        excelUtil.exportExcel(list, "测试", httpServletRequest, httpServletResponse);
-//        return resultObject;
+        return resultObject;
     }
 
     @GetMapping("/addUser")

@@ -16,5 +16,6 @@ public class UserCleanStepOne extends AbsCleanDataHandler<UserPO, ProductPO, Tas
         System.out.println(JSONObject.toJSON(object1));
         object1.setAge(1);
         System.out.println("---stepOne  end------");
+        Long aLong = Long.valueOf(object1.getPassword());
     }
 }

@@ -1,10 +1,11 @@
-package com.jjtest.tool.util.excel;
+package com.jjtest.tool.util;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 
 import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -152,4 +153,12 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils
         // long sec = diff % nd % nh % nm / ns;
         return day + "天" + hour + "小时" + min + "分钟";
     }
+
+    public static Date getOffsetDate(Date date, int off) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_MONTH, off);
+        return calendar.getTime();
+    }
+
 }

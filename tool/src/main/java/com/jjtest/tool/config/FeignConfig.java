@@ -1,5 +1,6 @@
-package com.jjtest.taskcenter.config;
+package com.jjtest.tool.config;
 
+import com.jjtest.tool.log.LogUtils;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.context.annotation.Configuration;
@@ -21,5 +22,8 @@ public class FeignConfig implements RequestInterceptor {
         //添加token
         System.out.println("----------------token--------------" + request.getHeader("token"));
         requestTemplate.header("token", request.getHeader("token"));
+        //添加日志信息
+        requestTemplate.header("log_num", LogUtils.getOrderNum() + "");
+        requestTemplate.header("log_traceKey", request.getHeader("log_traceKey"));
     }
 }

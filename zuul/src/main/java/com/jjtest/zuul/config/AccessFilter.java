@@ -1,5 +1,10 @@
 package com.jjtest.zuul.config;
 
+import com.jjtest.tool.constant.ResultConstant;
+import com.jjtest.tool.context.LogDataThreadLocal;
+import com.jjtest.tool.log.LogUtils;
+import com.jjtest.tool.model.InterfaceLogPO;
+import com.jjtest.tool.util.DateUtils;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
@@ -9,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.UUID;
 
 @Component
 public class AccessFilter extends ZuulFilter {
@@ -44,6 +50,10 @@ public class AccessFilter extends ZuulFilter {
 
         String uri = request.getRequestURI();
         String token = request.getHeader("token");
+        String traceKey = UUID.randomUUID().toString().replaceAll("-", "");
+        ctx.addZuulRequestHeader("log_num", "1");
+        ctx.addZuulRequestHeader("log_traceKey", traceKey);
+        setLog(traceKey);
         return successResponse(ctx, "error");
     }
 
@@ -59,5 +69,21 @@ public class AccessFilter extends ZuulFilter {
         ctx.setSendZuulResponse(true);
         ctx.setResponseStatusCode(200);
         return "true";
+    }
+
+    private void setLog(String traceKey) {
+        //接口日志
+        InterfaceLogPO logPO = new InterfaceLogPO();
+        logPO.setTraceKey(traceKey);
+        logPO.setId(UUID.randomUUID().toString());
+        logPO.setMethod(request.getMethod());
+        logPO.setUrl(request.getRequestURI());
+        logPO.setTime(DateUtils.dateTimeNow());
+        logPO.setVisitIp(request.getRemoteAddr());
+        logPO.setOrderNum(1);
+        logPO.setCallTime(System.currentTimeMillis());
+
+        LogDataThreadLocal.setInterfaceLog(logPO);
+        LogUtils.interfaceLog("", ResultConstant.SUCCESS_CODE);
     }
 }

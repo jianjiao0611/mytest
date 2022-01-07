@@ -19,4 +19,12 @@ public class UserPO {
     private Integer age;
 
     private String phone;
+
+    public UserPO() {
+    }
+
+    public UserPO(Integer id, String userName) {
+        this.id = id;
+        this.userName = userName;
+    }
 }

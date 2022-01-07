@@ -1,6 +1,19 @@
 server:
   port: 8004
 spring:
+#  sleuth:
+#    sampler:
+#      # 数据采集率，默认0.1
+#      probability: 1.0
+#  zipkin:
+#    service:
+#      # zipkin中服务名称
+#      name: user
+#    # zipkin 服务器地址
+#    base-url: http://localhost:9411
+#    # 发送数据到zipkin方式， RABBIT, KAFKA, WEB
+#    sender:
+#      type: web
   redis:
     host: localhost
     port: 6379
@@ -113,9 +126,14 @@ eureka:
       defaultZone: http://localhost:8000/eureka
     register-with-eureka: true
     fetch-registry: true
+    registry-fetch-interval-seconds: 5
+    instance-info-replication-interval-seconds: 5
+    initial-instance-info-replication-interval-seconds: 5
   instance:
     preferIpAddress: true
     instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    lease-expiration-duration-in-seconds: 90
+    lease-renewal-interval-in-seconds: 30
 
 # 日志配置
 logging:
@@ -123,6 +141,7 @@ logging:
     com.*: debug
     org.springframework: warn
   config: classpath:logback.xml
+
 
 #异步线程配置
 async:
