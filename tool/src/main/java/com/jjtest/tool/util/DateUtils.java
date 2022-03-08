@@ -5,8 +5,10 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 时间工具类
@@ -37,6 +39,27 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils
     public static Date getNowDate()
     {
         return new Date();
+    }
+
+
+    public static List<String> getAllHours(String startHour, String endHour) {
+        List<String> hours = new ArrayList<>();
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHH");
+            Date startDate = simpleDateFormat.parse(startHour);
+            Date endDate = simpleDateFormat.parse(endHour);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(startDate);
+            while (calendar.getTime().before(endDate)) {
+                String date = simpleDateFormat.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                hours.add(date);
+            }
+            hours.add(endHour);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hours;
     }
 
     /**

@@ -49,7 +49,6 @@ public class UserController {
 //        System.out.println(token);
         ResultObject resultObject = ResultObject.successResult();
         resultObject.setData(po);
-        float f = 2/0;
 //        UserPO fengfeng = userService.selectUserByUserName("jj");
 //        Object o = new Object();
 //

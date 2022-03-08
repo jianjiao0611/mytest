@@ -1,18 +1,12 @@
 package com.jjtest.user;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.db.Db;
 import cn.hutool.db.Entity;
 import com.alibaba.fastjson.JSONObject;
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.Session;
 import com.jjtest.tool.redis.DistributedLock;
-import com.jjtest.tool.util.DeleteFileUtil;
-import com.jjtest.tool.util.KeyWordLuceneService;
-import com.jjtest.tool.util.XmlUtils;
+import com.jjtest.tool.util.*;
 import com.jjtest.tool.util.sftp.FtpSitePo;
 import com.jjtest.tool.util.sftp.SFtpUtil;
-import com.jjtest.tool.util.SpringUtils;
 import com.jjtest.tool.util.sftp.SftpChannelInfo;
 import com.jjtest.tool.util.threadpool.AsyncInvoke;
 import com.jjtest.user.config.TestConfig;
@@ -22,7 +16,6 @@ import com.jjtest.user.service.*;
 import com.jjtest.user.service.eat.factory.AnimalFactory;
 import com.jjtest.user.util.RedisUtil;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.io.*;
-import java.lang.reflect.Proxy;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -424,11 +415,16 @@ public class UserApplicationTests {
 //        DataBasePo dataPo = XmlUtils.xmlToBean(xmlStr, DataBasePo.class);
 //        System.out.println(dataPo);
 
-        String s = "{1343434wqewe{3rrrr";
-        System.out.println(s);
-        s = s.replaceAll("(\\{)","");
+//        List<String> allHours = DateUtils.getAllHours("2021123100", "2022010223");
+//        System.out.println(allHours);
+        String str = "{\"a\":\"1\",\"b\":\"2\"}";
 
-        System.out.println(s);
+        String s = "1";
+        HashMap<String, String> map = JSONObject.parseObject(str, HashMap.class);
+        Object b =  map.get("a");
+        System.out.println(b);
+        System.out.println(map.get("a"));
+        System.out.println(s.equals(b));
 
     }
 

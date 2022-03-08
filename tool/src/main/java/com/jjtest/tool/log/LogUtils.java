@@ -11,8 +11,14 @@ import org.slf4j.LoggerFactory;
  */
 public class LogUtils {
 
+    /** 接口日志*/
     private static final Logger INTERFACE_LOGGER = LoggerFactory.getLogger("interface_log");
 
+    /**
+     * 接口日志记录
+     * @param msg 消息
+     * @param code 响应码
+     */
     public static void interfaceLog(Object msg, String code) {
         InterfaceLogPO interfaceLog = LogDataThreadLocal.getInterfaceLog();
 

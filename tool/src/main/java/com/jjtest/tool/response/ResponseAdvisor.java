@@ -53,6 +53,8 @@ public class ResponseAdvisor implements ResponseBodyAdvice<Object> {
             } else {
                 interfaceLog.setResult(JSONObject.toJSONString(body));
             }
+            interfaceLog.setEndTime(System.currentTimeMillis());
+            interfaceLog.setCostTime(interfaceLog.getEndTime() - interfaceLog.getCallTime());
             LogUtils.interfaceLog(interfaceLog);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());

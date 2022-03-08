@@ -22,3 +22,10 @@ eureka:
 spring:
   application:
     name: zuul
+
+# 日志配置
+logging:
+  level:
+    com.*: debug
+    org.springframework: warn
+  config: classpath:logback.xml

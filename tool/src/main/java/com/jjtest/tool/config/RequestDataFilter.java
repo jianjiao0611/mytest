@@ -1,23 +1,23 @@
 package com.jjtest.tool.config;
 
-import com.jjtest.tool.constant.ResultConstant;
 import com.jjtest.tool.context.DefaultContextDataThreadLocal;
 import com.jjtest.tool.context.LogDataThreadLocal;
-import com.jjtest.tool.log.LogUtils;
 import com.jjtest.tool.model.InterfaceLogPO;
 import com.jjtest.tool.model.LoginUserModel;
-import com.jjtest.tool.response.ResultObject;
 import com.jjtest.tool.util.DateUtils;
 import com.jjtest.tool.util.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.UUID;
 
 public class RequestDataFilter implements Filter {
+
+    @Value("${spring.application.name}")
+    private String serviceName;
 
 
     @Override
@@ -40,6 +40,7 @@ public class RequestDataFilter implements Filter {
         logPO.setVisitIp(httpServletRequest.getRemoteAddr());
         logPO.setOrderNum(logNum + 1);
         logPO.setCallTime(System.currentTimeMillis());
+        logPO.setService(serviceName);
 
         LogDataThreadLocal.setInterfaceLog(logPO);
         filterChain.doFilter(servletRequest, servletResponse);
