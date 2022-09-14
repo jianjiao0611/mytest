@@ -93,6 +93,7 @@ public class RedisTest {
         }));
 
         System.out.println(ls);
+        System.out.println(2);
 
         System.out.println(String.format("测试%d条,上销售%d",2,5));
     }
