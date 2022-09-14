@@ -58,6 +58,9 @@ public class UserApplicationTests {
     @Resource(name = "userService")
     private IUser iUser;
 
+    @Autowired
+    private SpringUtils1 springUtils1;
+
     String script = "local value1 = tonumber(ARGV[1])\n"
             + "local value2 = tonumber(ARGV[2])\n"
             + "local key = KEYS[1]\n"
@@ -66,6 +69,16 @@ public class UserApplicationTests {
             + "if value1>value2 then result=10\n"
             + "else result = result-1 end\n"
             + "return result";
+
+    @Test
+    public void testLUA(){
+        List<String> keys = new ArrayList<>();
+        keys.add("fff");
+        List<String> params = new ArrayList<>();
+        params.add("1");
+        params.add("2");
+        Long aLong = redisUtil.evalLuaReturnLong(script, keys, params);
+    }
 
     @Test
     public void contextLoads() {
@@ -139,17 +152,19 @@ public class UserApplicationTests {
 
     @Test
     public void test1(){
-        String jsonStr = testConfig.getTestff();
-        try {
-            System.out.println(jsonStr);
-            jsonStr = jsonStr.replaceAll("\\\\\\{", "{");
-            jsonStr = jsonStr.replaceAll("\\\\\\}", "}");
-            System.out.println(jsonStr);
-            UserPO po = JSONObject.parseObject(jsonStr, UserPO.class);
-            System.out.println(po);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        String jsonStr = testConfig.getTestff();
+//        try {
+//            System.out.println(jsonStr);
+//            jsonStr = jsonStr.replaceAll("\\\\\\{", "{");
+//            jsonStr = jsonStr.replaceAll("\\\\\\}", "}");
+//            System.out.println(jsonStr);
+//            UserPO po = JSONObject.parseObject(jsonStr, UserPO.class);
+//            System.out.println(po);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        UserService bean = SpringUtils1.getBean(UserService.class);
+        System.out.println(bean);
     }
 
     @Test
@@ -417,14 +432,33 @@ public class UserApplicationTests {
 
 //        List<String> allHours = DateUtils.getAllHours("2021123100", "2022010223");
 //        System.out.println(allHours);
-        String str = "{\"a\":\"1\",\"b\":\"2\"}";
+//        String str = "{\"a\":\"1\",\"b\":\"2\"}";
+//
+//        String s = "1";
+//        HashMap<String, String> map = JSONObject.parseObject(str, HashMap.class);
+//        Object b =  map.get("a");
+//        System.out.println(b);
+//        System.out.println(map.get("a"));
+//        System.out.println(s.equals(b));
 
-        String s = "1";
-        HashMap<String, String> map = JSONObject.parseObject(str, HashMap.class);
-        Object b =  map.get("a");
-        System.out.println(b);
-        System.out.println(map.get("a"));
-        System.out.println(s.equals(b));
+//        System.out.println(String.format("ss%s",2));
+
+        String s = "{\"createTime\":\"\",\"userName\":\"fengf\"}";
+
+        UserPO userPO = JSONObject.parseObject(s, UserPO.class);
+        System.out.println(userPO);
+
+        List<Integer> list = Arrays.asList(1,2,3,4,5);
+
+        System.out.println(JSONObject.toJSON(list));
+
+        Collections.shuffle(list);
+        System.out.println(list);
+        Random random = new Random();
+        for(int i=0; i<5; i++){
+            int num = random.nextInt(100);
+            System.out.println(num);
+        }
 
 
     }

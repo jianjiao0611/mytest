@@ -6,6 +6,7 @@ import com.jjtest.tool.response.ResultObject;
 import com.jjtest.user.config.TestConfig;
 import com.jjtest.user.po.UserPO;
 import com.jjtest.user.service.UserService;
+import com.jjtest.user.vo.TestVO;
 import com.jjtest.user.vo.UserLoginVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,20 +35,22 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResultObject login(@RequestBody UserLoginVO vo) {
+    public ResultObject login(@RequestBody TestVO s) {
         ResultObject resultObject = new ResultObject();
-        if (vo == null) {
-            throw new ServiceException("参数有误");
-        }
-        UserPO userPO = userService.selectUserByUserName(vo.getUserName());
-        if (userPO == null) {
-            throw new ServiceException("用户不存在");
-        }
-        if (userPO.getPassword().equals(vo.getPassword())) {
-            resultObject.successResultObject();
-        } else {
-            throw new ServiceException("密码错误");
-        }
+        UserLoginVO user = s.getUser();
+        System.out.println(user);
+//        if (vo == null) {
+//            throw new ServiceException("参数有误");
+//        }
+//        UserPO userPO = userService.selectUserByUserName(vo.getUserName());
+//        if (userPO == null) {
+//            throw new ServiceException("用户不存在");
+//        }
+//        if (userPO.getPassword().equals(vo.getPassword())) {
+//            resultObject.successResultObject();
+//        } else {
+//            throw new ServiceException("密码错误");
+//        }
         return resultObject;
     }
 

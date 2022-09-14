@@ -610,4 +610,32 @@ public class RedisUtil {
         }
         return result;
     }
+
+    /**
+     * 执行脚本文件
+     * @param script
+     * @param keys
+     * @param params
+     */
+    public Object evalLuaReturn(String script, List<String> keys, List<String> params) {
+        Object result = null;
+        try {
+            result = redisTemplate.execute(new RedisCallback<Object>() {
+                @Override
+                public Object doInRedis(RedisConnection redisConnection) throws DataAccessException {
+                    Object nativeConnection = redisConnection.getNativeConnection();
+                    if (nativeConnection instanceof JedisCluster) {
+                        return  ((JedisCluster) nativeConnection).eval(script, keys, params);
+                    } else if (nativeConnection instanceof Jedis) {
+                        return ((Jedis) nativeConnection).eval(script, keys, params);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e) {
+            log.error("执行lua脚本出错", e);
+            result = null;
+        }
+        return result;
+    }
 }

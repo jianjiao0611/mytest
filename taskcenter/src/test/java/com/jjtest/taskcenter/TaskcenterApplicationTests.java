@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -125,11 +126,22 @@ public class TaskcenterApplicationTests {
 //        System.out.println(num);
 //        num.remove(new Integer(99999999));
 //        System.out.println(num);
-        UserPO userPO = new UserPO(1,"jj");
-        UserPO userPO1 = Optional.ofNullable(userPO).orElseGet(()->{return new UserPO(2,"ff");});
-        System.out.println(userPO1);
+//        UserPO userPO = new UserPO(1,"jj");
+//        UserPO userPO1 = Optional.ofNullable(userPO).orElseGet(()->{return new UserPO(2,"ff");});
+//        System.out.println(userPO1);
 
-        DateUtils.
+        Map<String, Object> map = new HashMap<>();
+        Integer a = new Integer(2);
+        BigDecimal b = new BigDecimal(a);
+        map.put("c",1);
+        map.put("a", a);
+        map.put("b",b);
+        System.out.println(b);
+        for(Map.Entry entry : map.entrySet()){
+            boolean is = entry.getValue() instanceof Integer;
+            System.out.println(entry.getKey() + ":" + is);
+        }
+
 
 
     }
