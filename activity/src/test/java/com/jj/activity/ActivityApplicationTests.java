@@ -1,5 +1,7 @@
 package com.jj.activity;
 
+import com.jj.activity.po.DeploymentPO;
+import com.jj.activity.workflow.ActivityDeployService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,23 @@ public class ActivityApplicationTests {
      */
     @Autowired
     private Environment evn;
+
+    @Autowired
+    private ActivityDeployService activityDeployService;
     @Test
     public void contextLoads() {
         String property = evn.getProperty("jianjiao.test");
         System.out.println(property);
+    }
+
+    @Test
+    public void activity() {
+        DeploymentPO deploymentPO = new DeploymentPO();
+        deploymentPO.setName("出差申请流程");
+        deploymentPO.setBpmnPath("bpmn/evction.bpmn");
+        deploymentPO.setPngPath("bpmn/evction.png");
+
+        activityDeployService.deploy(deploymentPO);
     }
 
 }
