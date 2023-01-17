@@ -148,6 +148,7 @@ public class UserApplicationTests {
 //        }, (k,v)->v));
 //        System.out.println(collect);
 
+
     }
 
     @Test
@@ -443,23 +444,35 @@ public class UserApplicationTests {
 
 //        System.out.println(String.format("ss%s",2));
 
-        String s = "{\"createTime\":\"\",\"userName\":\"fengf\"}";
+//        String s = "{\"createTime\":\"\",\"userName\":\"fengf\"}";
+//
+//        UserPO userPO = JSONObject.parseObject(s, UserPO.class);
+//        System.out.println(userPO);
+//
+//        List<Integer> list = Arrays.asList(1,2,3,4,5);
+//
+//        System.out.println(JSONObject.toJSON(list));
+//
+//        Collections.shuffle(list);
+//        System.out.println(list);
+//        Random random = new Random();
+//        for(int i=0; i<5; i++){
+//            int num = random.nextInt(100);
+//            System.out.println(num);
+//        }
+//        Calendar calendar = Calendar.getInstance();
+//        Date date = DateUtils.dateTime(DateUtils.YYYY_MM_DD, "2023-01-14");
+//        System.out.println(date);
+//        calendar.setTime(date);
+//
+//        int i = calendar.get(Calendar.DAY_OF_WEEK) -1;
+//        System.out.println(i);
 
-        UserPO userPO = JSONObject.parseObject(s, UserPO.class);
-        System.out.println(userPO);
+//        String s = PhoneNumUtil.encryptPhoneNew("13523233333", "124836957");
+//        System.out.println(s);
 
-        List<Integer> list = Arrays.asList(1,2,3,4,5);
-
-        System.out.println(JSONObject.toJSON(list));
-
-        Collections.shuffle(list);
-        System.out.println(list);
-        Random random = new Random();
-        for(int i=0; i<5; i++){
-            int num = random.nextInt(100);
-            System.out.println(num);
-        }
-
+        String encrypt = PhoneNumUtil.encrypt("knuzdrkq3ba1qd06f", "162347054");
+        System.out.println(encrypt);
 
     }
 

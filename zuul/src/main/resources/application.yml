@@ -2,7 +2,10 @@ server:
   port: 8005
 
 zuul:
-#  忽略服务
+  host:
+    connect-timeout-millis: 60000
+    socket-timeout-millis: 60000
+  #  忽略服务
   ignored-services: "*"
   routes:
     userservice:
@@ -11,6 +14,29 @@ zuul:
     taskcenter:
       path: /taskservice/**
       service-id: taskcenter
+#feign:
+#  hystrix:
+#    enabled: true
+#  client:
+#    config:
+#      defult:
+#        connectTimeout: 600000
+#        readTimeout: 600000
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+ribbon:
+  eureka:
+    enabled: true
+  eager-load:
+    enabled: true
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
+  SocketTimeout: 60000
 eureka:
   client:
     serviceUrl:
@@ -22,6 +48,10 @@ eureka:
 spring:
   application:
     name: zuul
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
 
 # 日志配置
 logging:

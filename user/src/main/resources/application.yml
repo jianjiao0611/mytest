@@ -1,3 +1,21 @@
 spring:
   profiles:
     active: ${ENV_TYPE:dev}
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+ribbon:
+  eureka:
+    enabled: true
+  eager-load:
+    enabled: true
+  ReadTimeOut: 50000
+  ConnectTimeout: 50000

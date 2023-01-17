@@ -6,6 +6,9 @@ import com.jjtest.tool.context.DefaultContextDataThreadLocal;
 import com.jjtest.tool.model.LoginUserModel;
 import com.jjtest.tool.response.ResultObject;
 import com.jjtest.tool.util.excel.ExcelUtil;
+import com.jjtest.tool.util.sftp.FtpSitePo;
+import com.jjtest.tool.util.sftp.SFtpUtil;
+import com.jjtest.tool.util.sftp.SftpChannelInfo;
 import com.jjtest.tool.util.threadpool.AsyncInvoke;
 import com.jjtest.user.po.UserPO;
 import com.jjtest.user.service.UserService;
@@ -142,24 +145,51 @@ public class UserController {
 
     @PostMapping(value = "/testF")
     @ApiOperation("文件")
-    public void testF() throws Exception {
+    public String testF(@RequestPart("file") MultipartFile multipartFile) throws Exception {
 //        MultipartFile file1 = servletRequest.getFile("file");
 //        System.out.println(file1.getOriginalFilename());
 
 
-        Collection<Part> parts = request.getParts();
-        for (Iterator<Part> iterator = parts.iterator(); iterator.hasNext();) {
-            Part part = iterator.next();
-            System.out.println("-----类型名称------->" + part.getName());
-            System.out.println("-----类型------->" + part.getContentType());
-            System.out.println("-----提交的类型名称------->" + part.getSubmittedFileName());
-            System.out.println("----流-------->" + part.getInputStream());
+//        Collection<Part> parts = request.getParts();
+//        for (Iterator<Part> iterator = parts.iterator(); iterator.hasNext();) {
+//            Part part = iterator.next();
+//            System.out.println("-----类型名称------->" + part.getName());
+//            System.out.println("-----类型------->" + part.getContentType());
+//            System.out.println("-----提交的类型名称------->" + part.getSubmittedFileName());
+//            System.out.println("----流-------->" + part.getInputStream());
+//        }
+//        CommonsMultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+//        if (resolver.isMultipart(request)) {
+//            //将request转换成多分解请求
+//            MultipartHttpServletRequest mhs = resolver.resolveMultipart(request);
+//            //根据input中存在的name来获取是否存在上传文件
+//            MultipartFile mf = mhs.getFile("file"); //这里可以用getFiles("file")的方式来处理多个文件。返回的是一个list.然后一个一个处理就可以了
+//            //创建文件保存名
+//            File file = new File(mf.getOriginalFilename());
+//            System.out.println(file);
+//        }
+//        resolver.setDefaultEncoding("utf-8");
+//        MultipartHttpServletRequest multipartHttpServletRequest = resolver.resolveMultipart(request);
+//        MultiValueMap<String, MultipartFile> multiFileMap = multipartHttpServletRequest.getMultiFileMap();
+//        System.out.println(multiFileMap);
+        String originalFilename = multipartFile.getOriginalFilename();
+        System.out.println(originalFilename);
+
+        try {
+            long size = multipartFile.getSize();
+            System.out.println(size);
+            FtpSitePo po = new FtpSitePo();
+            po.setIp("127.0.0.1");
+            po.setPort(22);
+            po.setAccount("jiaojiao");
+            po.setPassword("115714");
+            SftpChannelInfo channelSftp = SFtpUtil.getChannelSftp(po);
+            String floder = "/tmp/test/";
+            SFtpUtil.uploadFile(channelSftp, "/data/test", "test.mp4", multipartFile.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        CommonsMultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
-        resolver.setDefaultEncoding("utf-8");
-        MultipartHttpServletRequest multipartHttpServletRequest = resolver.resolveMultipart(request);
-        MultiValueMap<String, MultipartFile> multiFileMap = multipartHttpServletRequest.getMultiFileMap();
-        System.out.println(multiFileMap);
+        return "ok";
     }
 
     @PostMapping("/testXss")
