@@ -132,4 +132,9 @@ public class PhoneNumUtil {
         return stringBuilder.toString();
     }
 
+    public static void main(String[] args) {
+        String encrypt = PhoneNumUtil.encrypt("e1r2cre1rkdzcna30c", "061573845");
+        System.out.println(encrypt);
+    }
+
 }

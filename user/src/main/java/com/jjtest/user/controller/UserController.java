@@ -145,7 +145,7 @@ public class UserController {
 
     @PostMapping(value = "/testF")
     @ApiOperation("文件")
-    public String testF(@RequestPart("file") MultipartFile multipartFile) throws Exception {
+    public String testF(@RequestParam("file") MultipartFile multipartFile) throws Exception {
 //        MultipartFile file1 = servletRequest.getFile("file");
 //        System.out.println(file1.getOriginalFilename());
 

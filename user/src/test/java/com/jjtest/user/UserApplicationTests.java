@@ -3,6 +3,7 @@ package com.jjtest.user;
 import cn.hutool.db.Db;
 import cn.hutool.db.Entity;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.jjtest.tool.redis.DistributedLock;
 import com.jjtest.tool.util.*;
 import com.jjtest.tool.util.sftp.FtpSitePo;
@@ -16,6 +17,7 @@ import com.jjtest.user.service.*;
 import com.jjtest.user.service.eat.factory.AnimalFactory;
 import com.jjtest.user.util.RedisUtil;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.sql.Array;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -166,6 +170,20 @@ public class UserApplicationTests {
 //        }
         UserService bean = SpringUtils1.getBean(UserService.class);
         System.out.println(bean);
+
+        UserPO userPO = new UserPO();
+        List<UserPO> userPOS = Optional.of(userPO)
+                .map(userService::selectUserList)
+                .orElseGet(Collections::emptyList);
+
+        Map<Integer, List<UserPO>> collect = Optional.ofNullable(userService.selectUserList(userPO))
+                .orElseGet(Collections::emptyList)
+                .stream()
+                .filter(po -> StringUtils.isNotBlank(po.getUserName()))
+                .collect(Collectors.groupingBy(UserPO::getAge));
+        System.out.println(collect);
+
+
     }
 
     @Test
@@ -318,7 +336,10 @@ public class UserApplicationTests {
         try {
             File folder = new File(floder);
             if (!folder.exists()){
-                folder.mkdirs();
+                boolean mkdirs = folder.mkdirs();
+                if (!mkdirs) {
+                    return;
+                }
             }
             File file = new File(floder + "test.txt");
             FileWriter fw = new FileWriter(file, true);
@@ -460,19 +481,73 @@ public class UserApplicationTests {
 //            int num = random.nextInt(100);
 //            System.out.println(num);
 //        }
-//        Calendar calendar = Calendar.getInstance();
-//        Date date = DateUtils.dateTime(DateUtils.YYYY_MM_DD, "2023-01-14");
-//        System.out.println(date);
-//        calendar.setTime(date);
+//        LocalTime localTime = LocalTime.of(9,0);
+//        LocalTime localTime1 = LocalTime.of(22,0);
 //
-//        int i = calendar.get(Calendar.DAY_OF_WEEK) -1;
-//        System.out.println(i);
+//        System.out.println(localTime);
+//        System.out.println(localTime1);
+//        System.out.println(localTime.isAfter(localTime1));
 
-//        String s = PhoneNumUtil.encryptPhoneNew("13523233333", "124836957");
-//        System.out.println(s);
+//        List<String> list = Arrays.asList("1" ,"2","3");
+//
+//
+//        System.out.println(list);
+//
+//        List<UserPO> collect = list.stream().map(s -> {
+//            UserPO userPO = new UserPO();
+//            userPO.setUserName(s);
+//            return userPO;
+//        }).collect(Collectors.toList());
+//        System.out.println(collect);
+//
+//        List<List<String>> list1 = Arrays.asList(Arrays.asList("1",null), Arrays.asList("2"), Arrays.asList("3"));
+//        System.out.println(list1);
+//
+//        TreeSet<UserPO> collect1 = list1.stream().flatMap(Collection::stream).map(s -> {
+//            UserPO userPO = new UserPO();
+//            userPO.setUserName(s);
+//            return userPO;
+//        }).collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(UserPO::getUserName, Comparator.nullsLast(Comparator.reverseOrder())))));
+//        System.out.println(collect1);
+//
+//        TreeSet<UserPO> collect2 = list1.stream().flatMap(Collection::stream).map(s -> {
+//            UserPO userPO = new UserPO();
+//            userPO.setUserName(s);
+//            return userPO;
+//        }).collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(UserPO::getUserName, Comparator.nullsFirst(Comparator.naturalOrder())))));
+//        System.out.println(collect2);
 
-        String encrypt = PhoneNumUtil.encrypt("knuzdrkq3ba1qd06f", "162347054");
-        System.out.println(encrypt);
+//        //设置各个参数的值，并放入map
+//        String md5str = "";
+//        JSONObject map = new JSONObject();
+//        map.put("appid","1531000001");
+//        map.put("channelId","1531");
+//        map.put("msisdn","18059881776");
+//        map.put("seq","1010142238111");
+//        map.put("servicetype","5");
+//        map.put("usertype","10");
+//        map.put("userId","90000001210");
+//        String baseKey = "382085DF8C1D9F3DEC49B31FF4173E55";
+//
+//        List<String> list = new ArrayList<String>();
+//// 对所有参数进行排序
+//        for (Map.Entry<String, Object> entry : map.entrySet()) {
+//            list.add(entry.getKey());
+//        }
+//        Collections.sort(list);
+//// 拼接要加密的字符串
+//        for (String key : list) {
+//            md5str += key + map.get(key);
+//        }
+//
+////MD5加密，得到hash值
+//        System.out.println("加密前：" + md5str.trim() + baseKey);
+//        String hash = org.apache.commons.codec.digest.DigestUtils.md5Hex(md5str.trim() + baseKey);
+//        System.out.println(hash);
+
+        Date offsetDate = DateUtils.getOffsetDate(new Date(), -2);
+        System.out.println(DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS, offsetDate));
+
 
     }
 

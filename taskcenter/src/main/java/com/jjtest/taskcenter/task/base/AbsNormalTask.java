@@ -4,15 +4,19 @@ import com.jjtest.taskcenter.constant.TaskStatusEnum;
 import com.jjtest.taskcenter.po.TaskLogPO;
 import com.jjtest.taskcenter.po.TaskPO;
 import com.jjtest.taskcenter.service.TaskLogService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class AbsNormalTask implements ITaskService {
-
+    /**
+     * 日志
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbsNormalTask.class);
     /**
      * 日志service
      */
@@ -21,12 +25,10 @@ public abstract class AbsNormalTask implements ITaskService {
 
     @Override
     public void run(TaskPO taskPO, String taskParam) {
-        TaskLogPO taskLogPO = null;
-        TaskStatusEnum statusEnum = null;
+        TaskStatusEnum statusEnum = TaskStatusEnum.IN_EXECUTION;
         List<String> msg = new ArrayList<>(10);
+        TaskLogPO taskLogPO = new TaskLogPO();
         try {
-            statusEnum = TaskStatusEnum.IN_EXECUTION;
-            taskLogPO = new TaskLogPO();
             taskLogPO.setTaskId(taskPO.getTaskId());
             taskLogPO.setTaskName(taskPO.getTaskName());
             taskLogPO.setTaskParam(taskParam);
@@ -40,19 +42,21 @@ public abstract class AbsNormalTask implements ITaskService {
             statusEnum = TaskStatusEnum.FAIL;
         } finally {
             taskLogPO.setStatus(statusEnum.getStatus());
-            taskLogPO.setResult(msg.stream().collect(Collectors.joining(",")));
+            taskLogPO.setResult(String.join(",", msg));
             taskLogService.updateTaskLog(taskLogPO);
         }
     }
 
     @Override
     public void runAgain(TaskPO taskPO, Long taskLogId, boolean isForce) {
-        TaskLogPO taskLogPO = null;
+        TaskLogPO taskLogPO = taskLogService.selectTaskLogById(taskLogId);
+        if (taskLogPO == null) {
+            LOGGER.error("未找到日志记录，{}", taskLogId);
+            return;
+        }
         List<String> msg = new ArrayList<>(10);
-        TaskStatusEnum statusEnum = null;
+        TaskStatusEnum statusEnum = TaskStatusEnum.IN_EXECUTION;
         try {
-            statusEnum = TaskStatusEnum.IN_EXECUTION;
-            taskLogPO = taskLogService.selectTaskLogById(taskLogId);
             taskLogPO.setStatus(statusEnum.getStatus());
             taskLogPO.setTaskStartTime(new Date());
             taskLogService.updateTaskLog(taskLogPO);
@@ -64,7 +68,7 @@ public abstract class AbsNormalTask implements ITaskService {
             statusEnum = TaskStatusEnum.FAIL;
         } finally {
             taskLogPO.setStatus(statusEnum.getStatus());
-            taskLogPO.setResult(msg.stream().collect(Collectors.joining(",")));
+            taskLogPO.setResult(String.join(",", msg));
             taskLogService.updateTaskLog(taskLogPO);
         }
     }

@@ -31,6 +31,8 @@ public class UserPO extends BasePo implements java.io.Serializable {
 
     private Date createTime;
 
+    private Boolean isAdmin;
+
   private StudentPo studentPo;
 
     public UserPO() {

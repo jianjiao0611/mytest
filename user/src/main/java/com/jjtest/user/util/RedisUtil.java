@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +30,22 @@ public class RedisUtil {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+    private JedisPool jedisPool;
+
     // =============================common============================
+
+    private Jedis getJedis() {
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+
+        jedisPool = new JedisPool(jedisPoolConfig, "127.0.0.1", 6379);
+        return jedisPool.getResource();
+    }
+
+    public void hsetJ(String node, String key, String o) throws Exception {
+        Jedis jedis = this.getJedis();
+
+        jedis.hset(node.getBytes("UTF-8"), key.getBytes("UTF-8"), o.getBytes("UTF-8"));
+    }
 
     /**
      * 指定缓存失效时间

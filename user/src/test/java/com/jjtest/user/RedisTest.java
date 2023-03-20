@@ -1,16 +1,22 @@
 package com.jjtest.user;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.jjtest.tool.util.MapUtils;
+import com.jjtest.user.po.CountryDTO;
+import com.jjtest.user.po.UserPO;
 import com.jjtest.user.util.RedisUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -74,29 +80,105 @@ public class RedisTest {
 //        Object ids2 = redisUtil.evalLuaReturn(script, Arrays.asList("ids"), Arrays.asList("a","b","c"));
 //        System.out.println(ids2);
 
-        String ids1 = (String) redisUtil.get("FAQ_CHANNEL_KNG_TOP_111210");
-        System.out.println(ids1);
-        System.out.println(JSONObject.parseArray(ids1, String.class));
+//        String ids1 = (String) redisUtil.get("FAQ_CHANNEL_KNG_TOP_111210");
+//        System.out.println(ids1);
+//        System.out.println(JSONObject.parseArray(ids1, String.class));
+        try {
+            redisUtil.hsetJ("protalSeq", "110103f71446-cf3c-4a86-9dd8-2f3882057d0611", "ff");
+
+            redisUtil.hsetJ("protalSeq", "110103f71446-cf3c-4a86-9dd8-2f3882057d0612", "ff");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void main(String[] args) {
-        List<Integer> ls = new ArrayList<>();
-        ls.add(3);
-        ls.add(1);
-        ls.add(5);
-        ls.add(6);
-        ls.add(2);
-        ls.add(4);
-        System.out.println(ls);
-        ls.sort(((o1, o2) -> {
-            return o2.compareTo(o1);
-        }));
+    @Test
+    public void testSerialize() {
+        CountryDTO countryDTO = new CountryDTO();
+        String str = JSON.toJSONString(countryDTO);
+        System.out.println(str);
+    }
 
-        System.out.println(ls);
-        System.out.println(2);
-        System.out.println(5);
+    public static void main(String[] args) throws Exception{
+//        List<Integer> ls = new ArrayList<>();
+//        ls.add(3);
+//        ls.add(1);
+//        ls.add(5);
+//        ls.add(6);
+//        ls.add(2);
+//        ls.add(4);
+//        System.out.println(ls);
+//        ls.sort(((o1, o2) -> {
+//            return o2.compareTo(o1);
+//        }));
+//
+//        System.out.println(ls);
+//        System.out.println(2);
+//        System.out.println(1);
+//
+//        System.out.println(String.format("测试%d条,上销售%d",2,5));
 
-        System.out.println(String.format("测试%d条,上销售%d",2,5));
+//        int a=2;
+//        int b=5;
+//        System.out.println((double) (a/b)  * 100);
+//
+//        System.out.println( (double)a/b * 100);
+//        System.out.println(new BigDecimal(99999.235).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
+//
+//        System.out.println(new BigDecimal(10000000.235).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
+//
+//        System.out.println(1.23456781f == 1.23456782f);
+
+//        String s = "test/1.5.1.txt";
+//        System.out.println(s.substring(s.lastIndexOf("/"),s.indexOf(".")));
+
+        List<UserPO> list = new ArrayList<>();
+        UserPO userPO = new UserPO();
+        userPO.setId(1);
+        userPO.setAge(11);
+        list.add(userPO);
+
+        userPO = new UserPO();
+        userPO.setId(2);
+        userPO.setAge(11);
+        list.add(userPO);
+
+        userPO = new UserPO();
+        userPO.setId(3);
+        userPO.setAge(12);
+        userPO.setUserName("pppp");
+        list.add(userPO);
+//
+//        Map<Integer, List<UserPO>> collect = list.stream().collect(Collectors.groupingBy(UserPO::getAge));
+//        System.out.println(collect);
+
+        Class<? extends UserPO> clazz = userPO.getClass();
+        Field age = clazz.getDeclaredField("userName");
+        age.setAccessible(true);
+        System.out.println();
+        System.out.println(age.get(userPO));
+
+
+
+//        Map<String, UserPO> map = MapUtils.listToMap(list, "id");
+//
+//        List<String> ids = Arrays.asList("1","3");
+//        List<Integer> collect = new ArrayList<>();
+//        ids.stream().map(map::get)
+//                .filter(s->s.getId() == 0)
+//                .forEach(s->{
+//                    collect.add(s.getAge());
+//                });
+//
+//        System.out.println(collect);
+
+
+//        Map<Integer, List<UserPO>> collect = Optional.ofNullable()
+//                .orElseGet(Collections::emptyList)
+//                .stream()
+//                .filter(po -> StringUtils.isNotBlank(po.getUserName()))
+//                .collect(Collectors.groupingBy(UserPO::getAge));
+//        System.out.println(collect);
     }
 
 }
